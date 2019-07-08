@@ -10,9 +10,11 @@ def result(r: int):
     Use the result of a party to reset and announce if necessary"""
     if r:  # If 0, nothing to do
         if r in [1, 2]:  # If someone yin, get the last person who play and mark as winner
-            ri, r2, text = 2, 0, f"{board.curr_turn[1]} win !"
+            r1, r2, text = 2, 0, f"{board.curr_turn[1]} win !"
         elif r == 3:  # Set equality
             r1, r2, text = 1, 1, "Equality"
+        board.curr_turn[1].gameover(r1)
+        board.curr_turn[0].gameover(r2)
         showwarning("Turn end", text)  # Announce the result
         for b in range(9):  # Reset all the buttons
             buttons[b].config(state="normal", text=DEFAULT_BUTTON)
