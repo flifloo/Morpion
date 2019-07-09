@@ -5,16 +5,16 @@ class Player:
         """self, number (int), pawn (str), name (str)
         A player of the party"""
         self.number = number  # The number of the player
-        self.pawn = pawn  # The paw of the player
+        self.pawn = pawn  # The pawn of the player
         self.name = name  # The name of the player
-        self.pawns = list()  # All the paws on the grid of the player
+        self.pawns = list()  # All the pawns on the grid of the player
         self.points = 0  # The points of the player
 
     def add_pawn(self, enemy: list, pos: int):
         """self, enemy (list), pos (int)
         Check if position is free by the enemy grid and add to the grid"""
         if (pos not in self.pawns) and (pos not in enemy):  # Check the enemy grid
-            self.pawns.append(pos)  # Add the paw to the player grid
+            self.pawns.append(pos)  # Add the pawn to the player grid
             return True
         else:
             return False
@@ -62,18 +62,18 @@ class Player:
 
     def __len__(self):
         """self
-        Return the number of player's paws"""
+        Return the number of player's panws"""
         return len(self.pawns)
 
     def __iter__(self):
         """self
-        Setup iterable for paws list"""
+        Setup iterable for pawns list"""
         self.iterable = 0
         return self
 
     def __next__(self):
         """self
-        Return iterable of paws"""
+        Return iterable of pawns"""
         if self.iterable <= len(self.pawns)-1:  # check is not exceed
             self.iterable += 1
             return self.pawns[self.iterable-1]
@@ -82,19 +82,19 @@ class Player:
 
 
 class Board:
-    """self, p1_paw (str), p1_name (str), p2_paw (str), p2_name (str)
+    """self, p1_pawn (str), p1_name (str), p2_pawn (str), p2_name (str)
     A party object"""
-    def __init__(self, p1_paw: str, p1_name : str, p2_paw: str, p2_name: str):
-        """self, p1_paw (str), p1_name (str), p2_paw (str), p2_name (str)
+    def __init__(self, p1_pawn: str, p1_name : str, p2_pawn: str, p2_name: str):
+        """self, p1_pawn (str), p1_name (str), p2_pawn (str), p2_name (str)
         A party object"""
-        # Security if conflict with players paws and name
-        if p1_paw == p2_paw:
+        # Security if conflict with players pawns and name
+        if p1_pawn == p2_pawn:
             raise ValueError("The pawns are the same !")
         elif p1_name == p2_name:
             raise ValueError("The name are the same !")
 
-        self.player1 = Player(1, p1_paw, p1_name)  # Set player 1
-        self.player2 = Player(2, p2_paw, p2_name)  # Set player 2
+        self.player1 = Player(1, p1_pawn, p1_name)  # Set player 1
+        self.player2 = Player(2, p2_pawn, p2_name)  # Set player 2
         self.curr_turn = [self.player1, self.player2]  # Set turn order
 
     def check(self):

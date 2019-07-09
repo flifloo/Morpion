@@ -36,11 +36,11 @@ def case(posi: int):
 
 
 def set_players():
-    """Set players paws and name before start the party"""
-    if "" in [p1_paw.get(), p1_name.get(), p2_paw.get(), p2_name.get()]:  # check if any empty entry
+    """Set players pawns and name before start the party"""
+    if "" in [p1_pawn.get(), p1_name.get(), p2_pawn.get(), p2_name.get()]:  # check if any empty entry
         showerror("Error", "A entry is blank !")  # Show a warning
-    elif p1_paw.get() == p2_paw.get():  # Check if players paws are same
-        showerror("Error", "Players paws are identical !")  # Show a warning
+    elif p1_pawn.get() == p2_pawn.get():  # Check if players pawns are same
+        showerror("Error", "Players pawns are identical !")  # Show a warning
     elif p1_name.get() == p2_name.get():  # Check if players names are same
         showerror("Error", "Players names are identical !")  # Show a warning
     else:  # If everything is fine
@@ -62,20 +62,20 @@ players_p2f = LabelFrame(players_f, text="Player 2")
 players_p1f.grid(row=0, column=0)
 players_p2f.grid(row=0, column=1)
 
-p1_paw, p1_name, p2_paw, p2_name = StringVar(), StringVar(), StringVar(), StringVar()  # Setup entry value
+p1_pawn, p1_name, p2_pawn, p2_name = StringVar(), StringVar(), StringVar(), StringVar()  # Setup entry value
 
 # Generate symmetrically widgets for player infos
-for i in [[players_p1f, p1_paw, p1_name], [players_p2f, p2_paw, p2_name]]:  # List contain the frame and the entry var
+for i in [[players_p1f, p1_pawn, p1_name], [players_p2f, p2_pawn, p2_name]]:  # List contain the frame and the entry var
     Label(i[0], text="Player name:").pack()
     Entry(i[0], textvariable=i[2], width=20).pack()
-    Label(i[0], text="Player paw:").pack()
+    Label(i[0], text="Player pawn:").pack()
     Entry(i[0], textvariable=i[1], width=5).pack()
 
 Button(players, text="Submit", command=set_players).pack()  # Create the submit button
 
 players.mainloop()
 
-board = Board(p1_paw.get(), p1_name.get(), p2_paw.get(), p2_name.get())  # Create a party board
+board = Board(p1_pawn.get(), p1_name.get(), p2_pawn.get(), p2_name.get())  # Create a party board
 
 # Create party window
 windows = Tk()
