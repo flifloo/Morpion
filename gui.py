@@ -1,8 +1,14 @@
-from tkinter import Tk, Label, Button, Frame, StringVar
-from tkinter.messagebox import showwarning
+from tkinter import Tk, Label, Button, Entry, Frame, LabelFrame, StringVar
+from tkinter.messagebox import showwarning, showerror, askokcancel
 from Morpion import Board
 
 DEFAULT_BUTTON = "    "  # Default Morpion button text
+
+
+def on_closing():
+    """When a windows want to close, show a warning and exit correctly the program"""
+    if askokcancel("Quit", "Do you want to quit?"):  # Ask to close
+        exit(0)
 
 
 def result(r: int):
@@ -26,14 +32,55 @@ def case(posi: int):
     Action when a button is used"""
     buttons[posi].config(state="disabled", text=board.curr_turn[0].pawn)  # Disable and set player pawn on the button
     result(board.turn(posi))  # Make player turn and return the result of the party
-    turn.set(board.curr_turn[0])  # Update player turn display
+    turn.set(f"{board.curr_turn[0]} turn !")  # Update player turn display
 
 
-board = Board()  # Create a board
+def set_players():
+    """Set players paws and name before start the party"""
+    if "" in [p1_paw.get(), p1_name.get(), p2_paw.get(), p2_name.get()]:  # check if any empty entry
+        showerror("Error", "A entry is blank !")  # Show a warning
+    elif p1_paw.get() == p2_paw.get():  # Check if players paws are same
+        showerror("Error", "Players paws are identical !")  # Show a warning
+    elif p1_name.get() == p2_name.get():  # Check if players names are same
+        showerror("Error", "Players names are identical !")  # Show a warning
+    else:  # If everything is fine
+        players.destroy()  # Quite the windows to let the party begin
 
-# Create base window
+
+# Create players config window
+players = Tk()
+players.title("Players configs")
+players.protocol("WM_DELETE_WINDOW", on_closing)  # Set action when windows is closing
+
+# Create a frame for players info and submit button
+players_f = Frame(players)
+players_f.pack()
+
+# Create two frame for each player info
+players_p1f = LabelFrame(players_f, text="Player 1")
+players_p2f = LabelFrame(players_f, text="Player 2")
+players_p1f.grid(row=0, column=0)
+players_p2f.grid(row=0, column=1)
+
+p1_paw, p1_name, p2_paw, p2_name = StringVar(), StringVar(), StringVar(), StringVar()  # Setup entry value
+
+# Generate symmetrically widgets for player infos
+for i in [[players_p1f, p1_paw, p1_name], [players_p2f, p2_paw, p2_name]]:  # List contain the frame and the entry var
+    Label(i[0], text="Player name:").pack()
+    Entry(i[0], textvariable=i[2], width=20).pack()
+    Label(i[0], text="Player paw:").pack()
+    Entry(i[0], textvariable=i[1], width=5).pack()
+
+Button(players, text="Submit", command=set_players).pack()  # Create the submit button
+
+players.mainloop()
+
+board = Board(p1_paw.get(), p1_name.get(), p2_paw.get(), p2_name.get())  # Create a party board
+
+# Create party window
 windows = Tk()
 windows.title("Morpion")
+windows.protocol("WM_DELETE_WINDOW", on_closing)  # Set action when windows is closing
 
 Label(windows, text="Morpion").pack()  # Add a text
 
@@ -44,9 +91,8 @@ f.pack()
 # Setup variable string display
 turn = StringVar()
 scoreboard = StringVar()
-
-turn.set(board.curr_turn[0])
-scoreboard.set("0/0")
+turn.set(f"{board.curr_turn[0]} turn !")
+scoreboard.set(f"{board.player1}: {board.player1.points}/{board.player2}: {board.player2.points}")
 
 Label(windows, textvariable=turn).pack()
 Label(windows, textvariable=scoreboard).pack()
