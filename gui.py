@@ -1,3 +1,4 @@
+from sys import exit
 from tkinter import Tk, Label, Button, Entry, Frame, LabelFrame, StringVar
 from tkinter.messagebox import showwarning, showerror, askokcancel
 from Morpion import Board
