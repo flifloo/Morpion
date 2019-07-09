@@ -1,11 +1,12 @@
 class Player:
-    """self, number (int), pawn (str)
+    """self, number (int), pawn (str), name (str)
     A player of the party"""
-    def __init__(self, number: int, pawn: str):
+    def __init__(self, number: int, pawn: str, name: str):
         """self, number (int), pawn (str), name (str)
         A player of the party"""
         self.number = number  # The number of the player
         self.pawn = pawn  # The paw of the player
+        self.name = name  # The name of the player
         self.pawns = list()  # All the paws on the grid of the player
         self.points = 0  # The points of the player
 
@@ -52,12 +53,17 @@ class Player:
     def __str__(self):
         """self
         Send back the player's name"""
-        return f"Player {self.number}"
+        return self.name
 
     def __int__(self):
         """self
         Send back the player's number"""
         return self.number
+
+    def __len__(self):
+        """self
+        Return the number of player's paws"""
+        return len(self.pawns)
 
     def __iter__(self):
         """self
@@ -76,19 +82,25 @@ class Player:
 
 
 class Board:
-    """self
+    """self, p1_paw (str), p1_name (str), p2_paw (str), p2_name (str)
     A party object"""
-    def __init__(self):
-        """self
+    def __init__(self, p1_paw: str, p1_name : str, p2_paw: str, p2_name: str):
+        """self, p1_paw (str), p1_name (str), p2_paw (str), p2_name (str)
         A party object"""
-        self.player1 = Player(1, "O")  # Set player 1
-        self.player2 = Player(2, "X")  # Set player 2
+        # Security if conflict with players paws and name
+        if p1_paw == p2_paw:
+            raise ValueError("The pawns are the same !")
+        elif p1_name == p2_name:
+            raise ValueError("The name are the same !")
+
+        self.player1 = Player(1, p1_paw, p1_name)  # Set player 1
+        self.player2 = Player(2, p2_paw, p2_name)  # Set player 2
         self.curr_turn = [self.player1, self.player2]  # Set turn order
 
     def check(self):
         """self
         Check if someone win the game"""
-        if ((len(self.player1.pawns) == 4) and (len(self.player2.pawns) == 4))\
+        if ((len(self.player1) == 4) and (len(self.player2) == 4))\
                 and not (self.player1.check() and not self.player2.check()):  # Check equality
             return 3
         elif self.player1.check():  # Check player 1
@@ -122,5 +134,6 @@ class Board:
         board = f"""P1: {self.player1.points} | P2: {self.player2.points}
 [{pawns[0]},{pawns[1]},{pawns[2]}]
 [{pawns[3]},{pawns[4]},{pawns[5]}]
-[{pawns[6]},{pawns[7]},{pawns[8]}]"""
+[{pawns[6]},{pawns[7]},{pawns[8]}]
+{self.player1}: {self.player1.points}/{self.player2}: {self.player2.points}"""
         print(board)
