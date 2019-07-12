@@ -22,27 +22,10 @@ class Player:
     def check(self):
         """self
         Check if the player have a matching grid for win"""
-        return (
-            # Horizontal check
-            (  # First line
-                (0 in self.pawns) and (1 in self.pawns) and (2 in self.pawns)
-            ) or (  # Second line
-                (3 in self.pawns) and (4 in self.pawns) and (5 in self.pawns)
-            ) or (  # Third line
-                (6 in self.pawns) and (7 in self.pawns) and (8 in self.pawns)
-            ) or (  # Vertical check
-                # First line
-                (0 in self.pawns) and (3 in self.pawns) and (6 in self.pawns)
-            ) or (  # Second line
-                (1 in self.pawns) and (4 in self.pawns) and (7 in self.pawns)
-            ) or (  # Third line
-                (2 in self.pawns) and (5 in self.pawns) and (8 in self.pawns)
-            ) or (  # Cross check
-                # Top-left to bottom-right
-                (0 in self.pawns) and (4 in self.pawns) and (8 in self.pawns)
-            ) or (  # Bottom-left to top-right
-                (2 in self.pawns) and (5 in self.pawns) and (6 in self.pawns)
-            ))
+        for l in [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]:  # wins list
+            if len(set(self.pawns + l)) <= len(self.pawns + l) - 3:  # Check if the set lose 3 pawns
+                return True
+        return False
 
     def gameover(self, result: int):
         """self, result (int): 0 = Loose, 1 = Equality, 2 = Win
@@ -100,8 +83,8 @@ class Board:
     def check(self):
         """self
         Check if someone win the game"""
-        if ((len(self.player1) == 4) and (len(self.player2) == 4))\
-                and not (self.player1.check() and not self.player2.check()):  # Check equality
+        if (len(self.player1) + len(self.player2) == 9)\
+                and not(self.player1.check() or self.player2.check()):  # Check equality
             return 3
         elif self.player1.check():  # Check player 1
             return 1
