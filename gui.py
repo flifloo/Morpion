@@ -25,7 +25,7 @@ def result(r: int):
         showwarning("Turn end", text)  # Announce the result
         for b in range(9):  # Reset all the buttons
             buttons[b].config(state="normal", text=DEFAULT_BUTTON)
-        scoreboard.set(f"{board.player1}: {board.player1.points}/{board.player2}: {board.player2.points}")  # Scoreboard
+        scoreboard.set(f"{board.players[0]}: {board.players[0].points}/{board.players[1]}: {board.players[1].points}")  # Scoreboard
 
 
 def case(posi: int):
@@ -93,7 +93,7 @@ f.pack()
 turn = StringVar()
 scoreboard = StringVar()
 turn.set(f"{board.curr_turn[0]} turn !")
-scoreboard.set(f"{board.player1}: {board.player1.points}/{board.player2}: {board.player2.points}")
+scoreboard.set(f"{board.players[0]}: {board.players[0].points}/{board.players[1]}: {board.players[1].points}")
 
 Label(windows, textvariable=turn).pack()
 Label(windows, textvariable=scoreboard).pack()
